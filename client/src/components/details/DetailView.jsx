@@ -10,18 +10,21 @@ import { DataContext } from '../../context/DataProvider';
 
 // components
 import Comments from './comments/Comments';
+import { alignProperty } from '@mui/material/styles/cssUtils';
 
 const Container = styled(Box)(({ theme }) => ({
     margin: '50px 100px',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.up('md')]: {
         margin: 0
     },
+    
 }));
 
 const Image = styled('img')({
     width: '100%',
     height: '50vh',
-    objectFit: 'cover'
+    objectFit: 'inherit'
+    
 });
 
 const EditIcon = styled(Edit)`
@@ -90,15 +93,7 @@ const DetailView = () => {
     return (
         <Container>
             <Image src={post.picture || url} alt="post" />
-            <Box style={{ float: 'right' }}>
-                {   
-                    account.username === post.username && 
-                    <>  
-                        <Link to={`/update/${post._id}`}><EditIcon color="primary" /></Link>
-                        <DeleteIcon onClick={() => deleteBlog()} color="error" />
-                    </>
-                }
-            </Box>
+            
             <Heading>{post.title}</Heading>
 
             <Author>
@@ -112,6 +107,18 @@ const DetailView = () => {
             </Category>
             
             <Typography>{post.description}</Typography>
+            <p></p>
+            <Box style={{ float: 'left'}}>
+                {   
+                    account.username === post.username && 
+                    <>  
+                        <Link to={`/update/${post._id}`}><EditIcon color="primary" /></Link>
+                        <span align="center" style={{ textAlign: 'center',fontWeight: 'bold'}}> Edit Blog</span>
+                        <DeleteIcon onClick={() => deleteBlog()} color="error"></DeleteIcon>
+                        <span align="center" style={{fontWeight: 'bold'}}>Delete Blog</span>
+                    </>
+                }
+            </Box>
             <Comments post={post} />
         </Container>
     )

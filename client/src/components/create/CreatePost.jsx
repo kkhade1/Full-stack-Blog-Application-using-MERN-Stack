@@ -21,7 +21,7 @@ const Container = styled(Box)(({ theme }) => ({
 const Image = styled('img')({
     width: '100%',
     height: '50vh',
-    objectFit: 'cover'
+    objectFit: 'inherit'
 });
 
 const StyledFormControl = styled(FormControl)`
@@ -58,13 +58,14 @@ const initialPost = {
 const CreatePost = () => {
     const navigate = useNavigate();
     const location = useLocation();
-
-    const [post, setPost] = useState(initialPost);
+    const [newpost, setPost] = useState(initialPost);
     const [file, setFile] = useState('');
-    const { account } = useContext(DataContext);
+    const [imageURL, setImageURL] = useState("");
 
-    const url = post.picture ? post.picture : 'https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80';
-    
+    const { account } = useContext(DataContext);
+    //post.picture ? post.picture: 
+    const url = "https://st2.depositphotos.com/1006899/8495/i/600/depositphotos_84953610-stock-photo-chat-bubbles-with-blog-words.jpg";
+    console.log("url",url);
     useEffect(() => {
         const getImage = async () => { 
             if(file) {
@@ -73,36 +74,58 @@ const CreatePost = () => {
                 data.append("file", file);
                 
                 const response = await API.uploadFile(data);
-                post.picture = response.data;
+                if (response.isSuccess) {
+                    newpost.picture = response.data;
+                    setImageURL(response.data);    
+                }
             }
         }
         getImage();
-        post.categories = location.search?.split('=')[1] || 'All';
-        post.username = account.username;
+        newpost.categories = location.search?.split('=')[1] || 'All';
+        newpost.username = account.username;
     }, [file])
+    // useEffect(() => {
+    //     const getImage = async () => { 
+    //         if(file) {
+    //             const data = new FormData();
+    //             data.append("name", file.name);
+    //             data.append("file", file);
+                
+    //             const response = await API.uploadFile(data);
+    //             newpost.picture = response.data;
+    //         }
+    //     }
+    //     getImage();
+    //     console.log("location search", location.search)
+    //     newpost.categories = location.search?.split('=')[1] || 'All';
+    //     newpost.username = account.username;
+    // }, [file])
 
     const savePost = async () => {
-        await API.createPost(post);
+        console.log("post",newpost)
+        await API.createPost(newpost);
         navigate('/');
     }
 
     const handleChange = (e) => {
-        setPost({ ...post, [e.target.name]: e.target.value });
+        console.log("handle change called",newpost);
+        setPost({ ...newpost, [e.target.name]: e.target.value });
+        console.log("handle change after called",newpost);
     }
 
     return (
         <Container>
-            <Image src={url} alt="post" />
+            <Image src={ imageURL ? imageURL : url} />
 
             <StyledFormControl>
-                <label htmlFor="fileInput">
-                    <Add fontSize="large" color="action" />
+                <label htmlFor="fileInput" textalign="center" style={{ display: "flex",border: "none",fontSize:"large"}}>Add Image
+                    <Add fontSize="large" color="action"/>
                 </label>
                 <input
                     type="file"
                     id="fileInput"
                     style={{ display: "none" }}
-                    onChange={(e) => setFile(e.target.files[0])}
+                    onChange={(e) => setFile(e.target.files[0]) && handleChange(e)}
                 />
                 <InputTextField onChange={(e) => handleChange(e)} name='title' placeholder="Title" />
                 <Button onClick={() => savePost()} variant="contained" color="primary">Publish</Button>
@@ -119,17 +142,19 @@ const CreatePost = () => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 name ="categories"
-                label="Age"
                 onChange={(e) => handleChange(e)}
             >
                 <MenuItem value="Music">Music</MenuItem>
+                <MenuItem value="Movies">Movies</MenuItem>
                 <MenuItem value="Sports">Sports</MenuItem>
                 <MenuItem value="Tech">Tech</MenuItem>
+                <MenuItem value="Fashion">Fashion</MenuItem>
+                
             </Select>
             </FormControl>
             <Textarea
                 rowsMin={5}
-                placeholder="Tell your story..."
+                placeholder="Blog Description ..."
                 name='description'
                 onChange={(e) => handleChange(e)} 
             />

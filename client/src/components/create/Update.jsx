@@ -19,8 +19,8 @@ const Container = styled(Box)(({ theme }) => ({
 const Image = styled('img')({
     marginTop: '10px',
     width: '100%',
-    height: '50vh',
-    objectFit: 'cover'
+    height: '60vh',
+    objectFit: 'inherit'
 });
 
 const StyledFormControl = styled(FormControl)`
@@ -63,7 +63,7 @@ const Update = () => {
 
     const { id } = useParams();
 
-    const url = 'https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80';
+    const url = "https://st2.depositphotos.com/1006899/8495/i/600/depositphotos_84953610-stock-photo-chat-bubbles-with-blog-words.jpg";
     
     useEffect(() => {
         const fetchData = async () => {
@@ -106,7 +106,7 @@ const Update = () => {
             <Image src={post.picture || url} alt="post" />
 
             <StyledFormControl>
-                <label htmlFor="fileInput">
+                <label htmlFor="fileInput"textalign="center" style={{ display: "flex",border: "none",fontSize:"large"}}>Add Image
                     <Add fontSize="large" color="action" />
                 </label>
                 <input
@@ -136,8 +136,10 @@ const Update = () => {
                 value={post.categories}
             >
                 <MenuItem value="Music">Music</MenuItem>
+                <MenuItem value="Movies">Movies</MenuItem>
                 <MenuItem value="Sports">Sports</MenuItem>
                 <MenuItem value="Tech">Tech</MenuItem>
+                <MenuItem value="Fashion">Fashion</MenuItem>
             </Select>
             </FormControl>
             <StyledTextArea

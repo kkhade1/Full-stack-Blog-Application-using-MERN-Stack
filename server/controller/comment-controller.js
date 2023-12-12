@@ -17,10 +17,11 @@ export const newComment = async (request, response) => {
 export const getComments = async (request, response) => {
     try {
         const comments = await Comment.find({ postId: request.params.id });
-        
+        console.log("comment data", comments);
         response.status(200).json(comments);
     } catch (error) {
-        response.status(500).json(error)
+        console.log("error comment data", error);
+        response.status(500).json(error);
     }
 }
 

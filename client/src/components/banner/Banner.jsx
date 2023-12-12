@@ -3,8 +3,8 @@ import { styled, Box, Typography } from '@mui/material';
 
 const Image = styled(Box)`
     width: 100%;
-    background: url(https://st2.depositphotos.com/1006899/8495/i/600/depositphotos_84953610-stock-photo-chat-bubbles-with-blog-words.jpg);
-        display: flex;
+    background: url(https://img.freepik.com/free-photo/technology-communication-icons-symbols-concept_53876-120314.jpg?w=826&t=st=1702267278~exp=1702267878~hmac=d9724a5c497e99226925a109b1004debc6f8c0caafa6fb09ac02d1698b039823);
+    display: flex;
 `;
 
 // const Heading = styled(Typography)`

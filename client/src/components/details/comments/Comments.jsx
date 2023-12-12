@@ -43,8 +43,11 @@ const Comments = ({ post }) => {
 
     useEffect(() => {
         const getData = async () => {
+            console.log("inside get cooment data",post._id)
             const response = await API.getAllComments(post._id);
+            console.log("outside responce data ",response.data)
             if (response.isSuccess) {
+                console.log("inside responce data ",response.data)
                 setComments(response.data);
             }
         }

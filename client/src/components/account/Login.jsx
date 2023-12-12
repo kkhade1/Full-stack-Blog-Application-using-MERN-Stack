@@ -13,7 +13,7 @@ const Component = styled(Box)`
 `;
 
 const Image = styled('img')({
-    width: 100,
+    width: 200,
     display: 'flex',
     margin: 'auto',
     padding: '50px 0 0'
@@ -53,7 +53,7 @@ const Text = styled(Typography)`
 `;
 
 const Error = styled(Typography)`
-    font-size: 10px;
+    font-size: 15px;
     color: #ff6161;
     line-height: 0;
     margin-top: 10px;
@@ -80,7 +80,7 @@ const Login = ({ isUserAuthenticated }) => {
     const navigate = useNavigate();
     const { setAccount } = useContext(DataContext);
 
-    const imageURL = 'https://www.sesta.it/wp-content/uploads/2021/03/logo-blog-sesta-trasparente.png';
+    const imageURL = 'https://www.365technoblog.com/wp-content/uploads/2022/01/blog-blogging.jpeg';
 
     useEffect(() => {
         showError(false);
@@ -97,6 +97,7 @@ const Login = ({ isUserAuthenticated }) => {
     const loginUser = async () => {
         let response = await API.userLogin(login);
         if (response.isSuccess) {
+            //console.log("got response",  response.isSuccess)
             showError('');
 
             sessionStorage.setItem('accessToken', `Bearer ${response.data.accessToken}`);
@@ -107,18 +108,22 @@ const Login = ({ isUserAuthenticated }) => {
             setLogin(loginInitialValues);
             navigate('/');
         } else {
-            showError('Something went wrong! please try again later');
+           // console.log("got response",  response.isSuccess)
+            //console.log("response: ", response)
+            showError(`${response.msg} please try again later`);
         }
     }
 
     const signupUser = async () => {
         let response = await API.userSignup(signup);
+        console.log("login page responce",response.data);
         if (response.isSuccess) {
             showError('');
             setSignup(signupInitialValues);
             toggleAccount('login');
         } else {
-            showError('Something went wrong! please try again later');
+            //showError('Something went wrong! please try again later');
+            showError(`${response.msg} please try again later`);
         }
     }
 
@@ -127,6 +132,9 @@ const Login = ({ isUserAuthenticated }) => {
     }
 
     return (
+        <>
+        <Typography variant="h2" style={{ textAlign: 'center',fontWeight: 'bold',marginTop:'20px'}} color="#0000FF">Welcome to Blogword</Typography>
+        <Typography variant="h6" style={{ textAlign: 'center' }} color="#FF7F50">Already Have an account Login or Create an account</Typography> 
         <Component>
             <Box>
                 <Image src={imageURL} alt="blog" />
@@ -134,19 +142,16 @@ const Login = ({ isUserAuthenticated }) => {
                     account === 'login' ?
                         <Wrapper>
                             <TextField variant="standard" value={login.username} onChange={(e) => onValueChange(e)} name='username' label='Enter Username' />
-                            <TextField variant="standard" value={login.password} onChange={(e) => onValueChange(e)} name='password' label='Enter Password' />
-
-                            {error && <Error>{error}</Error>}
-
+                            <TextField variant="standard" value={login.password} onChange={(e) => onValueChange(e)} name='password' type="password" label='Enter Password' />
                             <LoginButton variant="contained" onClick={() => loginUser()} >Login</LoginButton>
+                            {error && <Error>{error}</Error>}
                             <Text style={{ textAlign: 'center' }}>OR</Text>
                             <SignupButton onClick={() => toggleSignup()} style={{ marginBottom: 50 }}>Create an account</SignupButton>
                         </Wrapper> :
                         <Wrapper>
-                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name='name' label='Enter Name' />
-                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name='username' label='Enter Username' />
-                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name='password' label='Enter Password' />
-
+                            <TextField variant="standard" value={signup.name} onChange={(e) => onInputChange(e)} name='name' label='Enter Name' />
+                            <TextField variant="standard" value={signup.username} onChange={(e) => onInputChange(e)} name='username' label='Enter Username' />
+                            <TextField variant="standard" value={signup.password} onChange={(e) => onInputChange(e)} type="password" name='password' label='Enter Password' />
                             <SignupButton onClick={() => signupUser()} >Signup</SignupButton>
                             <Text style={{ textAlign: 'center' }}>OR</Text>
                             <LoginButton variant="contained" onClick={() => toggleSignup()}>Already have an account</LoginButton>
@@ -154,6 +159,7 @@ const Login = ({ isUserAuthenticated }) => {
                 }
             </Box>
         </Component>
+        </>
     )
 }
 

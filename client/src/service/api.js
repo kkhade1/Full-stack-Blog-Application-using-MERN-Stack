@@ -15,14 +15,18 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     function(config) {
+        console.log("config data", config)
         if (config.TYPE.params) {
             config.params = config.TYPE.params
         } else if (config.TYPE.query) {
             config.url = config.url + '/' + config.TYPE.query;
+            console.log("url of config",config.url)
         }
+        console.log("end url of config",config.url)
         return config;
     },
     function(error) {
+        console.log("error message from interceptor request",error);
         return Promise.reject(error);
     }
 );
@@ -34,20 +38,24 @@ axiosInstance.interceptors.response.use(
     },
     function(error) {
         // Stop global loader here
-        return Promise.reject(ProcessError(error));
+        console.log("error message from interceptor of responce",error);
+        console.log("error.status: ", error.status);
+        console.log("error.response: ", error.response);
+       console.log("error.request: ", error.request);
+        return ProcessError(error);
     }
 )
 
 ///////////////////////////////
 // If success -> returns { isSuccess: true, data: object }
-// If fail -> returns { isFailure: true, status: string, msg: string, code: int }
+// If fail -> returns { isSuccess: false, status: string, msg: string, code: int }
 //////////////////////////////
 const processResponse = (response) => {
     if (response?.status === 200) {
         return { isSuccess: true, data: response.data }
     } else {
         return {
-            isFailure: true,
+            isSuccess: false,
             status: response?.status,
             msg: response?.msg,
             code: response?.code
@@ -85,16 +93,16 @@ const ProcessError = async (error) => {
             //     return Promise.reject(error)
             // }
         } else {
-            console.log("ERROR IN RESPONSE: ", error.toJSON());
+            console.log("ERROR IN RESPONSE: ", error.response.data.msg);
             return {
                 isError: true,
-                msg: API_NOTIFICATION_MESSAGES.responseFailure,
+                msg: error.response.data.msg,
                 code: error.response.status
             }
         }
     } else if (error.request) { 
         // The request was made but no response was received
-        console.log("ERROR IN RESPONSE: ", error.toJSON());
+        console.log("ERROR IN RESPONSE: ", error.response.data.msg);
         return {
             isError: true,
             msg: API_NOTIFICATION_MESSAGES.requestFailure,
@@ -102,7 +110,7 @@ const ProcessError = async (error) => {
         }
     } else { 
         // Something happened in setting up the request that triggered an Error
-        console.log("ERROR IN RESPONSE: ", error.toJSON());
+        console.log("ERROR IN RESPONSE: ", error.response.data.msg);
         return {
             isError: true,
             msg: API_NOTIFICATION_MESSAGES.networkError,
