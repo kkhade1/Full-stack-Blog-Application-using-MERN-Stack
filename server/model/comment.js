@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 const CommentSchema = mongoose.Schema({
     name: {
         type: String,
@@ -18,8 +17,5 @@ const CommentSchema = mongoose.Schema({
         required: true
     }
 });
-
-
 const comment = mongoose.model('comment', CommentSchema);
-
 export default comment;

@@ -5,7 +5,8 @@ import { AddCircle as Add } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router-dom';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+//import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 
 import { API } from '../../service/api';
 
@@ -73,7 +74,7 @@ const Update = () => {
             }
         }
         fetchData();
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         const getImage = async () => { 

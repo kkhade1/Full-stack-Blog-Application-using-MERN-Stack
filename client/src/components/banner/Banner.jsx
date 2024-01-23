@@ -1,5 +1,5 @@
 
-import { styled, Box, Typography } from '@mui/material';
+import { styled, Box} from '@mui/material';
 
 const Image = styled(Box)`
     width: 100%;

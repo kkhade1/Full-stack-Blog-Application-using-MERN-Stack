@@ -16,7 +16,16 @@ import Login from './components/account/Login';
 
 const PrivateRoute = ({ isAuthenticated, ...props }) => {
   const token = sessionStorage.getItem('accessToken');
-  return isAuthenticated && token ? 
+  let allowAccess = false;
+  if (isAuthenticated && token){
+    allowAccess = true;
+  }else if(token){
+    allowAccess = true;
+  }else{
+    allowAccess = false;
+  }
+  //isAuthenticated && token
+  return allowAccess ? 
     <>
       <Header />
       <Outlet />

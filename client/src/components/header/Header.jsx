@@ -1,8 +1,8 @@
 
-import { AppBar, Toolbar, styled, Button } from '@mui/material'; 
+import { AppBar, Toolbar, styled } from '@mui/material'; 
 import { Link } from 'react-router-dom';
-
-import { useNavigate } from 'react-router-dom';
+import { API } from '../../service/api';
+//import { useNavigate } from 'react-router-dom';
 
 
 const Component = styled(AppBar)`
@@ -21,10 +21,13 @@ const Container = styled(Toolbar)`
 
 const Header = () => {
 
-    const navigate = useNavigate();
+   // const navigate = useNavigate();
 
-    const logout = async () => navigate('/account');
-        
+    //const logout = async () => navigate('/account');
+    // const handlelogout = async ()=>{
+    //     await API.userLogout();
+    // }
+
     return (
         <Component>
             <Container>

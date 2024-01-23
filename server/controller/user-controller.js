@@ -8,7 +8,11 @@ import User from '../model/user.js';
 dotenv.config();
 
 export const singupUser = async (request, response) => {
+    if(!request.body.name || !request.body.username || !request.body.password){
+        return response.status(400).json({msg: "All fields are mandatory, please add all fields"})
+    }
     try {
+        
         // const salt = await bcrypt.genSalt();
         // const hashedPassword = await bcrypt.hash(request.body.password, salt);
         const hashedPassword = await bcrypt.hash(request.body.password, 10);
@@ -18,7 +22,7 @@ export const singupUser = async (request, response) => {
         const newUser = new User(user);
         await newUser.save();
 
-        return response.status(200).json({ msg: 'Signup successfull' });
+        return response.status(200).json({ msg: 'Signup successful' });
     } catch (error) {
         return response.status(500).json({ msg: 'Error while signing up user' });
     }
@@ -51,6 +55,8 @@ export const loginUser = async (request, response) => {
 
 export const logoutUser = async (request, response) => {
     const token = request.body.token;
+    console.log("token before delete",token);
+
     await Token.deleteOne({ token: token });
 
     response.status(204).json({ msg: 'logout successfull' });

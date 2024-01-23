@@ -5,7 +5,7 @@ import { AddCircle as Add } from '@mui/icons-material';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 //import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { API } from '../../service/api';
@@ -61,9 +61,10 @@ const CreatePost = () => {
     const [newpost, setPost] = useState(initialPost);
     const [file, setFile] = useState('');
     const [imageURL, setImageURL] = useState("");
+    //const [validationError, setValidationError] = useState("");
 
     const { account } = useContext(DataContext);
-    //post.picture ? post.picture: 
+    
     const url = "https://st2.depositphotos.com/1006899/8495/i/600/depositphotos_84953610-stock-photo-chat-bubbles-with-blog-words.jpg";
     console.log("url",url);
     useEffect(() => {
@@ -84,30 +85,23 @@ const CreatePost = () => {
         newpost.categories = location.search?.split('=')[1] || 'All';
         newpost.username = account.username;
     }, [file])
-    // useEffect(() => {
-    //     const getImage = async () => { 
-    //         if(file) {
-    //             const data = new FormData();
-    //             data.append("name", file.name);
-    //             data.append("file", file);
-                
-    //             const response = await API.uploadFile(data);
-    //             newpost.picture = response.data;
-    //         }
-    //     }
-    //     getImage();
-    //     console.log("location search", location.search)
-    //     newpost.categories = location.search?.split('=')[1] || 'All';
-    //     newpost.username = account.username;
-    // }, [file])
 
     const savePost = async () => {
         console.log("post",newpost)
-        await API.createPost(newpost);
-        navigate('/');
+        if(newpost.title === ""){
+            alert("Title is required, please provide title for blog ");
+        } 
+        else if(newpost.description === ""){
+            alert("Blog description is required, please provide description for blog");
+        }
+        else {
+            await API.createPost(newpost);
+            navigate('/');
+        }
     }
 
     const handleChange = (e) => {
+
         console.log("handle change called",newpost);
         setPost({ ...newpost, [e.target.name]: e.target.value });
         console.log("handle change after called",newpost);
@@ -130,11 +124,6 @@ const CreatePost = () => {
                 <InputTextField onChange={(e) => handleChange(e)} name='title' placeholder="Title" />
                 <Button onClick={() => savePost()} variant="contained" color="primary">Publish</Button>
             </StyledFormControl>
-            {/* <Textarea
-                placeholder="Category"
-                name='categories'
-                onChange={(e) => handleChange(e)} 
-            /> */}
             <p></p>
             <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Category</InputLabel>

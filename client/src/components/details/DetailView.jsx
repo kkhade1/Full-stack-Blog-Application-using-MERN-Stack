@@ -23,8 +23,8 @@ const Container = styled(Box)(({ theme }) => ({
 const Image = styled('img')({
     width: '100%',
     height: '50vh',
-    objectFit: 'inherit'
-    
+    objectFit: 'inherit',
+    margin: '20px 20px'
 });
 
 const EditIcon = styled(Edit)`
@@ -45,13 +45,13 @@ const Heading = styled(Typography)`
     font-size: 38px;
     font-weight: 600;
     text-align: center;
-    margin: 50px 0 10px 0;
+    margin: 30px 0 10px 0;
 `;
 
 const Author = styled(Box)(({ theme }) => ({
     color: '#878787',
     display: 'flex',
-    margin: '20px 0',
+    margin: '20px 20px',
     [theme.breakpoints.down('sm')]: {
         display: 'block'
     },
@@ -60,7 +60,7 @@ const Author = styled(Box)(({ theme }) => ({
 const Category = styled(Box)(({ theme }) => ({
     color: '#878787',
     display: 'flex',
-    margin: '20px 0',
+    margin: '20px 20px',
     [theme.breakpoints.down('sm')]: {
         display: 'block'
     },
@@ -86,6 +86,7 @@ const DetailView = () => {
     }, []);
 
     const deleteBlog = async () => {  
+        alert("Are you sure? Do you want to delete this blog");
         await API.deletePost(post._id);
         navigate('/')
     }
@@ -106,7 +107,7 @@ const DetailView = () => {
                 <Typography>Category: <span style={{fontWeight: 600}}>{post.categories}</span></Typography>
             </Category>
             
-            <Typography>{post.description}</Typography>
+            <Typography marginLeft={'20px'} marginRight={'20px'}>{post.description}</Typography>
             <p></p>
             <Box style={{ float: 'left'}}>
                 {   

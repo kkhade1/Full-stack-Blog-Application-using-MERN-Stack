@@ -1,14 +1,13 @@
 import mongoose from 'mongoose';
-
 const PostSchema = mongoose.Schema({
     title: {
         type: String,
-        required: false,
+        required: true,
         unique: false
     },
     description: {
         type: String,
-        required: false
+        required: true
     },
     picture: {
         type: String,
@@ -26,8 +25,5 @@ const PostSchema = mongoose.Schema({
         type: Date
     }
 });
-
-
 const post = mongoose.model('post', PostSchema);
-
 export default post;
